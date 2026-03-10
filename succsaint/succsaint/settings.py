@@ -20,12 +20,20 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'n-#0$1#z41s-r=b0=7%p39+h0hi*+#(uzgmt8rs*^9#tcw)121'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # loads the .env file
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG = os.environ.get('DEBUG') == 'True'
+
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+ALLOWED_HOSTS = ['10.169.219.249', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -137,3 +145,27 @@ MEDIA_ROOT = BASE_DIR / 'media'
 MEDIAFILES_DIRS = [
     'media'
 ]
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.ERROR: "danger",
+}
+
+#SMTP settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'REMOVED_EMAIL'
+EMAIL_HOST_PASSWORD = 'REMOVED_PASSWORD'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'REMOVED_EMAIL'
+
+import os
+
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+
+EMAIL_HOST_USER= 'REMOVED_EMAIL'
+EMAIL_HOST_PASSWORD= 'REMOVED_PASSWORD'
