@@ -1,36 +1,57 @@
 from django import forms
-from .models import Account
+from .models import Account, UserProfile
 
 
 class RegistrationForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Create password'}))
-    password_confirm = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirm password'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder': 'Enter Password',
+        'class': 'form-control',
+    }))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder': 'Confirm Password'
+    }))
 
     class Meta:
         model = Account
-        fields = ['first_name', 'last_name', 'email', 'phone_number', 'password', 'password_confirm']
-
-    def __init__ (self, *args, **kwargs):
-        super(RegistrationForm, self).__init__(*args, **kwargs)
-        self.fields['first_name'].widget.attrs['placeholder'] = 'First name'
-        self.fields['last_name'].widget.attrs['placeholder'] = 'Last name'
-        self.fields['email'].widget.attrs['placeholder'] = 'Email address'
-        self.fields['phone_number'].widget.attrs['placeholder'] = 'Phone number'
-        for field in self.fields:
-            self.fields[field].widget.attrs['class'] = 'form-control'
-
+        fields = ['first_name', 'last_name', 'phone_number', 'email', 'password']
 
     def clean(self):
         cleaned_data = super(RegistrationForm, self).clean()
         password = cleaned_data.get('password')
-        password_confirm = cleaned_data.get('password_confirm')
+        confirm_password = cleaned_data.get('confirm_password')
 
-        if password and password_confirm and password != password_confirm:
-            raise forms.ValidationError("Passwords do not match.")
-        return cleaned_data
-    
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-        if Account.objects.filter(email=email).exists():
-            raise forms.ValidationError("An account with this email already exists.")
-        return email
+        if password != confirm_password:
+            raise forms.ValidationError(
+                "Password does not match!"
+            )
+
+    def __init__(self, *args, **kwargs):
+        super(RegistrationForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs['placeholder'] = 'Enter First Name'
+        self.fields['last_name'].widget.attrs['placeholder'] = 'Enter last Name'
+        self.fields['phone_number'].widget.attrs['placeholder'] = 'Enter Phone Number'
+        self.fields['email'].widget.attrs['placeholder'] = 'Enter Email Address'
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
+
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = Account
+        fields = ('first_name', 'last_name', 'phone_number')
+
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
+
+class UserProfileForm(forms.ModelForm):
+    profile_picture = forms.ImageField(required=False, error_messages = {'invalid':("Image files only")}, widget=forms.FileInput)
+    class Meta:
+        model = UserProfile
+        fields = ('address_line_1', 'address_line_2', 'city', 'state', 'country', 'profile_picture')
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
