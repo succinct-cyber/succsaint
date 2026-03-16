@@ -23,6 +23,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()  # loads the .env file
@@ -30,8 +31,25 @@ load_dotenv()  # loads the .env file
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG') == 'True'
 
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(os.path.join(BASE_DIR, '.env'))   # ← reads .env into os.environ
+
+# ── Email config — now os.environ.get() works correctly ──────
+EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST          = 'smtp.gmail.com'
+EMAIL_PORT          = 465
+EMAIL_USE_TLS       = False
+EMAIL_USE_SSL       = True
+EMAIL_HOST_USER     = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL  = os.environ.get('EMAIL_HOST_USER')
+
+# ── Paystack ──────────────────────────────────────────────────
+PAYSTACK_PUBLIC_KEY = os.environ.get('PAYSTACK_PUBLIC_KEY')
+PAYSTACK_SECRET_KEY = os.environ.get('PAYSTACK_SECRET_KEY')
+
 
 ALLOWED_HOSTS = ['10.169.219.249', 'localhost', '127.0.0.1']
 
@@ -49,6 +67,7 @@ INSTALLED_APPS = [
     'accounts',
     'store',
     'cart',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -152,20 +171,3 @@ MESSAGE_TAGS = {
     messages.ERROR: "danger",
 }
 
-#SMTP settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'REMOVED_EMAIL'
-EMAIL_HOST_PASSWORD = 'REMOVED_PASSWORD'
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'REMOVED_EMAIL'
-
-import os
-
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-
-
-EMAIL_HOST_USER= 'REMOVED_EMAIL'
-EMAIL_HOST_PASSWORD= 'REMOVED_PASSWORD'

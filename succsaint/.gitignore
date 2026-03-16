@@ -10,6 +10,9 @@ db.sqlite3
 __pycache__/
 *.pyc
 *.pyo
+# .gitignore
+**/__pycache__/
+*.pyc
 
 # Environment variables
 .env

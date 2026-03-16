@@ -1,0 +1,15 @@
+{% autoescape off %}
+
+Hi {{ user.first_name }},
+
+YOUR ORDER HAS BEEN RECEIVED
+
+Order Number: {{ order.order_number }}
+Order Total: ${{ order.order_total }}
+
+You can view your order details and track its status by logging into your account on our website.
+
+Best regards,
+The Succ Saints Team
+
+{% endautoescape %}
