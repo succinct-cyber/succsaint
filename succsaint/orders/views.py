@@ -184,11 +184,11 @@ def payments(request):
         except Exception as e:
     
         # ── Return success to the AJAX call in payment.html ───
-        return JsonResponse({
-            'status'      : 'success',
-            'order_number': order.order_number,
-            'payment_id'  : payment.payment_id,
-        })
+            return JsonResponse({
+                'status'      : 'success',
+                'order_number': order.order_number,
+                'payment_id'  : payment.payment_id,
+            })
 
     # ── Payment failed or was tampered with ───────────────────────
     return JsonResponse({'status': 'failed'}, status=400)
