@@ -36,6 +36,7 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+        
 
 class Account(AbstractBaseUser):
     first_name = models.CharField(max_length=50)
@@ -66,6 +67,9 @@ class Account(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
     
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+    
 
 class UserProfile(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE)
@@ -81,9 +85,5 @@ class UserProfile(models.Model):
 
     def full_address(self):
         return f'{self.address_line_1} {self.address_line_2}'
-
-    def full_name(self):
-        return f'{self.user.first_name} {self.user.last_name}'
-
 
 # Create your models here.

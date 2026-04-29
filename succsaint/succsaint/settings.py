@@ -51,7 +51,7 @@ PAYSTACK_PUBLIC_KEY = os.environ.get('PAYSTACK_PUBLIC_KEY')
 PAYSTACK_SECRET_KEY = os.environ.get('PAYSTACK_SECRET_KEY')
 
 
-ALLOWED_HOSTS = ['10.169.219.249', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['10.138.83.249', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'store',
     'cart',
     'orders',
+    'admin_honeypot',
 ]
 
 MIDDLEWARE = [
@@ -78,7 +79,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
 ]
+
+CSRF_TRUSTED_ORIGINS = ['http://192.168.1.5:8000']
+
+SESSION_EXPIRE_SECONDS = 3600  # 1 hour
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+SESSION_TIMEOUT_REDIRECT = 'accounts/login/'  # Redirect to login page after session expires
 
 ROOT_URLCONF = 'succsaint.urls'
 
@@ -171,3 +179,4 @@ MESSAGE_TAGS = {
     messages.ERROR: "danger",
 }
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

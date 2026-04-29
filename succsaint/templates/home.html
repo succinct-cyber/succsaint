@@ -12,7 +12,7 @@
 <div class="container">
 
 <div class="intro-banner-wrap">
-	<img src="{% static 'images/banners/1.jpg' %}" class="img-fluid rounded">
+	<img src="{% static './images/banners/succinct, inc.jpg' %}" class="img-fluid rounded">
 </div>
 
 </div> <!-- container //  -->
@@ -37,6 +37,14 @@
 			<figcaption class="info-wrap">
 				<a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
 				<div class="price mt-1">₦{{ product.price }}</div> <!-- price-wrap.// -->
+
+				<div class="rating-star mb-3">
+					<i class="fa fa-star{% if product.avgReview < 0.5 %}-o {% elif product.avgReview >= 0.5 and product.avgReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+					<i class="fa fa-star{% if product.avgReview < 1.5 %}-o {% elif product.avgReview >= 1.5 and product.avgReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+					<i class="fa fa-star{% if product.avgReview < 2.5 %}-o {% elif product.avgReview >= 2.5 and product.avgReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+					<i class="fa fa-star{% if product.avgReview < 3.5 %}-o {% elif product.avgReview >= 3.5 and product.avgReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+					<i class="fa fa-star{% if product.avgReview < 4.5 %}-o {% elif product.avgReview >= 4.5 and product.avgReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+				</div>
 			</figcaption>
 		</div>
 	</div> <!-- col.// -->
